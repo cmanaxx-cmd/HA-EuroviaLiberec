@@ -1,0 +1,103 @@
+# Lovelace Dashboard Configuration
+# Add this to your Lovelace dashboard as a new tab
+
+title: Eurovia Liberec
+icon: mdi:thermometer-lines
+cards:
+  - type: markdown
+    content: |
+      # Eurovia Liberec - Monitorování teplot a spotřeby
+      Přehled aktuálních a historických dat z PLC
+
+  - type: entities
+    title: Aktuální teploty
+    entities:
+      - entity: sensor.temp_rad1
+        name: Teplota Radiátor 1
+      - entity: sensor.temp_rad2
+        name: Teplota Radiátor 2
+      - entity: sensor.temp_rad3
+        name: Teplota Radiátor 3
+      - entity: sensor.temp_aku1h
+        name: Teplota Akumulátor 1 Horní
+      - entity: sensor.temp_aku1s
+        name: Teplota Akumulátor 1 Spodní
+      - entity: sensor.temp_aku2h
+        name: Teplota Akumulátor 2 Horní
+      - entity: sensor.temp_aku2s
+        name: Teplota Akumulátor 2 Spodní
+      - entity: sensor.temp_tc1
+        name: Teplota TC1
+      - entity: sensor.temp_tc2
+        name: Teplota TC2
+
+  - type: custom:apexcharts-card
+    title: Vývoj teplot za 24 hodin
+    chart_type: line
+    apex_config:
+      legend:
+        show: true
+        position: bottom
+    series:
+      - entity: history_stats.temp_rad1_average
+        name: Radiátor 1
+        type: line
+      - entity: history_stats.temp_rad2_average
+        name: Radiátor 2
+        type: line
+      - entity: history_stats.temp_rad3_average
+        name: Radiátor 3
+        type: line
+      - entity: history_stats.temp_aku1h_average
+        name: Akumulátor 1 Horní
+        type: line
+      - entity: history_stats.temp_aku2h_average
+        name: Akumulátor 2 Horní
+        type: line
+
+  - type: custom:tabbed-card
+    tabs:
+      - label: Poslední měření
+        icon: mdi:table
+        card:
+          type: custom:list-card
+          title: Tabulka posledních měření
+          entity_id: group.eurovia_measurements
+
+      - label: Export
+        icon: mdi:file-excel
+        card:
+          type: markdown
+          content: |
+            # Export dat
+            
+            Pro export dat do Excelu spusť v terminálu na Raspberry Pi:
+            
+            ```bash
+            python3 /config/export_to_excel.py
+            ```
+            
+            Soubor bude vytvořen: `/config/eurovia_export_YYYY-MM-DD.xlsx`
+            
+            Lze jej pak stáhnout přes Samba share nebo SFTP.
+
+      - label: Konfigurace
+        icon: mdi:cog
+        card:
+          type: markdown
+          content: |
+            # Konfigurace
+            
+            **PLC Modbus:**
+            - Host: 192.168.1.100
+            - Port: 502
+            - Slave ID: 1
+            
+            **Registry:**
+            - Teploty: 27-34 (děleno 10)
+            - Čas/Datum: 35-37
+            - Elektroměry: 10-25
+            - Synchronizace: 25 (PLC) & 500 (HA)
+            
+            **Databáze:**
+            - SQLite: `/config/eurovia_db.sqlite`

@@ -1,0 +1,12 @@
+{
+  "domain": "eurovia_liberec",
+  "name": "Eurovia Liberec Modbus PLC",
+  "codeowners": ["@cmanaxx-cmd"],
+  "config_flow": false,
+  "documentation": "https://github.com/cmanaxx-cmd/HA-EuroviaLiberec",
+  "requirements": [
+    "pymodbus==3.5.0"
+  ],
+  "version": "1.0.0",
+  "issue_tracker": "https://github.com/cmanaxx-cmd/HA-EuroviaLiberec/issues"
+}

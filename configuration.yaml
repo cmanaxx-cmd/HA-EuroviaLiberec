@@ -1,0 +1,15 @@
+# Home Assistant Configuration for Eurovia Liberec
+# Add this to your existing configuration.yaml
+
+# Eurovia Liberec Modbus PLC Integration
+eurovia_liberec:
+  host: 192.168.1.100
+  port: 502
+  slave_id: 1
+  scan_interval: 60  # Read every 60 seconds
+
+# Optional: Enable API for dashboard
+api:
+
+# Optional: Enable automation for alerts
+automation: !include automations.yaml
